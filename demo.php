@@ -6,7 +6,7 @@ $cookie='suno cookie';
 getToken($service_id,$cookie);
 */
 
-
+sunoApi::$cookie=$cookie;
 $token=sunoApi::getToken("1",$cookie);
 //生成歌曲
 $ops=[

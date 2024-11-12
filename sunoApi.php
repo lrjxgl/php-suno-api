@@ -122,6 +122,10 @@ class sunoApi{
 		$arr=json_decode($res,true);
 		//print_r($arr);
 		$list=[];
+		 
+		if(isset($arr['detail'])){
+			return "";
+		}
 		if(!empty($arr)){
 			foreach($arr as $audio){
 				$item=[
@@ -151,7 +155,9 @@ class sunoApi{
 		$url=self::$apiHost."/api/billing/info/";
 		$res=self::get($url);
 		$arr=json_decode($res,true);
-		 
+		if(isset($arr['detail'])){
+			return [];
+		} 
 		if(isset($arr['total_credits_left'])){
 			return [
 				"credits_left"=>$arr['total_credits_left'],
@@ -167,7 +173,9 @@ class sunoApi{
 		$url=self::$apiHost."/api/generate/lyrics/";
 		$res=self::post_json($url,json_encode(["prompt"=>$prompt]));
 		$arr=json_decode($res,true);
-		 
+		if(isset($arr['detail'])){
+			return "";
+		} 
 		if(isset($arr["id"])){
 			$id=$arr["id"];
 			return $id;
@@ -181,7 +189,11 @@ class sunoApi{
 		$res2=self::get($url);
 		 
 		$arr2=json_decode($res2,true);
-		 
+		if(isset($arr2['detail'])){
+			return [
+				"status"=>"doing"
+			];
+		} 
 		if(isset($arr2["status"]) && $arr2["status"]=="complete"){
 			return [
 				"title"=>$arr2["title"],
@@ -226,8 +238,11 @@ class sunoApi{
 		}
 		$json=json_encode($payload);
 		$res=self::post_json($url,$json);
-		//file_put_contents("temp/suno_log.txt",$res,FILE_APPEND);
+		 
 		$arr=json_decode($res,true);
+		if(isset($arr['detail'])){
+			return "";
+		} 
 		$ids=[];
 		if(isset($arr["clips"])){
 			$ids=[
@@ -266,6 +281,9 @@ class sunoApi{
 		$json=json_encode($payload);
 		$res=self::post_json($url,$json);
 		$arr=json_decode($res,true);
+		if(isset($arr['detail'])){
+			return "";
+		} 
 		$ids=[];
 		//print_r($arr);
 		if(isset($arr["clips"])){
